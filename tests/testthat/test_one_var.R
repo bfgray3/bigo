@@ -1,5 +1,9 @@
 context("one_var")
 
+#############
+### SETUP ###
+#############
+
 f1 <- function(n) {
   if (n < 3) {
     return(1)
@@ -8,16 +12,22 @@ f1 <- function(n) {
   }
 }
 
+### NAMED FUNCTION ###
 r1 <- bigo(f = f1, n = 1:15)
 time1 <- r1[["runtimes"]]
 name1 <- r1[["function_name"]]
 runs1 <- r1[["num_runs"]]
 
+### ANONYMOUS FUNCTION ###
 r2 <- bigo(f = function(n) if (n < 3) 1 else { Recall(n - 1) + Recall(n - 2) },
            n = 1:15)
 time2 <- r2[["runtimes"]]
 name2 <- r2[["function_name"]]
 runs2 <- r2[["num_runs"]]
+
+###############
+### RUNTIME ###
+###############
 
 test_that("Runtime tibble is right.", {
 
@@ -33,6 +43,10 @@ test_that("Runtime tibble is right.", {
 
 })
 
+######################
+### NUMBER OF RUNS ###
+######################
+
 test_that("Number of runs is right.", {
 
   expect_is(runs1, "numeric")
@@ -42,6 +56,10 @@ test_that("Number of runs is right.", {
   expect_equal(runs2, 1)
 
 })
+
+###################
+### BIGO OBJECT ###
+###################
 
 test_that("Overall bigo object is right.", {
 
@@ -55,6 +73,9 @@ test_that("Overall bigo object is right.", {
 
 })
 
+#####################
+### FUNCTION NAME ###
+#####################
 
 test_that("Function name is right.", {
 

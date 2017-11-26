@@ -1,5 +1,9 @@
 context("many_vars")
 
+#############
+### SETUP ###
+#############
+
 f1 <- function(n, m) {
   for(i in 1:n) {
     for (j in 1:m) {
@@ -11,16 +15,22 @@ f1 <- function(n, m) {
 N <- 5
 M <- 10
 
+### NAMED FUNCTION ###
 r1 <- bigo(f = f1, n = seq_len(N), m = seq_len(M))
 time1 <- r1[["runtimes"]]
 name1 <- r1[["function_name"]]
 runs1 <- r1[["num_runs"]]
 
+### ANONYMOUS FUNCTION ###
 r2 <- bigo(f = function(n, m) for (i in seq_len(N)) { for (j in seq_len(M)) { next } },
            n = seq_len(N), m = seq_len(M))
 time2 <- r2[["runtimes"]]
 name2 <- r2[["function_name"]]
 runs2 <- r2[["num_runs"]]
+
+###############
+### RUNTIME ###
+###############
 
 test_that("Runtime tibble is right.", {
 
@@ -38,6 +48,10 @@ test_that("Runtime tibble is right.", {
 
 })
 
+######################
+### NUMBER OF RUNS ###
+######################
+
 test_that("Number of runs is right.", {
 
   expect_is(runs1, "numeric")
@@ -47,6 +61,10 @@ test_that("Number of runs is right.", {
   expect_equal(runs2, 1)
 
 })
+
+###################
+### BIGO OBJECT ###
+###################
 
 test_that("Overall bigo object is right.", {
 
@@ -60,6 +78,9 @@ test_that("Overall bigo object is right.", {
 
 })
 
+#####################
+### FUNCTION NAME ###
+#####################
 
 test_that("Function name is right.", {
 
