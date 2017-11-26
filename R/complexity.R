@@ -23,20 +23,21 @@
 #'
 #' Analyze the algorithmic complexity of a function with respect to arguments.
 #'
-#' This function returns a tibble with class \code{bigo} prepended to the
-#' class attribute.  The rows are combinations of the expanded grid of the
-#' specified arguments, as well as the runtime for that combination.
+#' This function returns an object of class \code{bigo}, which contains a
+#' tibble of runtime results, the name of the function being measured, and
+#' the number of runs over which the results are averaged.
 #'
 #' @param f The function to be investigated.
 #' @param ... One or more numeric or integer vectors, passed as named
 #'   arguments, where the names are arguments of \code{f}.
+#' @param num_runs The number of experiments over which to average results.
 #' @return A tibble of class \code{bigo} with containing the results of the
 #'   runtime experiments
 #' @examples
 #' bigo(f = function(n) if (n < 3) 1 else { Recall(n - 1) + Recall(n - 2) },
 #'      n = 1:15)
 #' @export
-bigo <- function(f, ...) {
+bigo <- function(f, ..., num_runs = 1) {
 
   ################
   ### FUNCTION ###
@@ -84,9 +85,13 @@ bigo <- function(f, ...) {
                        expand.grid() %>%
                        mutate(elapsed = purrr::pmap_dbl(., .f_time, .fun = f))
 
-  class(arg_grid) <- c("bigo", class(arg_grid))
+  results <- list(runtimes = runtime_results,
+                  function_name = f_char,
+                  num_runs = num_runs)
 
-  arg_grid
+  class(results) <- c("bigo")
+
+  results
 
 }
 
