@@ -4,8 +4,12 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 1 warning | 1 note
 
+```
+ WARNING
+'qpdf' is needed for checks on size reduction of PDFs
+```
 * This is a new release.
 
 ## Reverse dependencies
