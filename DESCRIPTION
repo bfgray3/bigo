@@ -12,8 +12,10 @@ BugReports: https://github.com/bfgray3/bigo/issues
 Encoding: UTF-8
 Depends: R (>= 3.2.0)
 Imports: utils,
+    dplyr (>= 0.7.0),
     ggplot2,
     purrr
 LazyData: true
 License: MIT + file LICENSE
 Suggests: testthat
+RoxygenNote: 6.0.1
