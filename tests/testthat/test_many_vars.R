@@ -39,12 +39,14 @@ test_that("Runtime tibble is right.", {
   expect_equal(time1[["n"]], rep(seq_len(N), times = M))
   expect_equal(time1[["m"]], rep(seq_len(M), each = N))
   expect_identical(names(time1), c("n", "m", "elapsed"))
+  expect_true(all(is.finite(time1[["elapsed"]])))
 
   expect_is(time2, c("tbl_df", "tbl", "data.frame"))
   expect_equal(dim(time2), c(N * M, 3))
   expect_equal(time2[["n"]], rep(seq_len(N), times = M))
   expect_equal(time2[["m"]], rep(seq_len(M), each = N))
   expect_identical(names(time2), c("n", "m", "elapsed"))
+  expect_true(all(is.finite(time2[["elapsed"]])))
 
 })
 

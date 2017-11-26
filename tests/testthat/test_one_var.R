@@ -35,11 +35,13 @@ test_that("Runtime tibble is right.", {
   expect_equal(dim(time1), c(15, 2))
   expect_equal(time1[["n"]], 1:15)
   expect_identical(names(time1), c("n", "elapsed"))
+  expect_true(all(is.finite(time1[["elapsed"]])))
 
   expect_is(time2, c("tbl_df", "tbl", "data.frame"))
   expect_equal(dim(time2), c(15, 2))
   expect_equal(time2[["n"]], 1:15)
   expect_identical(names(time2), c("n", "elapsed"))
+  expect_true(all(is.finite(time2[["elapsed"]])))
 
 })
 
