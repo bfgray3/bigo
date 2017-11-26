@@ -1,0 +1,97 @@
+---
+title: "Introduction to bigo"
+author: "Bernie Gray"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Complexity of finding missing values
+
+In this vignette we'll explore the `bigo` package by comparing the built-in `anyNA` with the user-defined `function(x) any(is.na(x))`.  According to `?anyNA`, "The generic function `anyNA` implements `any(is.na(x))` in a possibly faster way (especially for atomic vectors)."
+
+## Setup
+
+Below we set up the functions that we'll use in our benchmarking. `fast` and `slow` take one argument, `n`, which is the parameter we will evaluate for runtime complexity.
+
+```{r}
+library(bigo)
+
+set.seed(4444)
+N <- c(NA, rnorm(1e8))
+my_anyNA <- function(x) any(is.na(x))
+
+benchmark_maker <- function(fun) {
+  
+  function(n) {
+    x <- N[seq_len(n)]
+    fun(x)
+  }
+  
+}
+
+fast <- benchmark_maker(fun = anyNA)
+slow <- benchmark_maker(fun = my_anyNA)
+```
+
+## Complexity analysis
+
+We use `bigo::bigo` to conduct our analysis, measuring runtime on 10 evenly spaced values of `n` from `1e6` to `1e8`.
+
+```{r}
+complexity_grid <- 10 ^ seq(from = 6, to = 8, length.out = 10)
+(fast_bigo <- bigo(f = fast, n = complexity_grid))
+(slow_bigo <- bigo(f = slow, n = complexity_grid))
+```
+
+Notice that the objects have class `bigo` and have three elements: `runtimes`, `function_name`, and `num_runs`.
+
+```{r}
+class(fast_bigo)
+names(fast_bigo)
+```
+
+Let's plot these runtimes to get a sense for the general shape of the runtime growth.  `bigo` provides an S3 `plot` method.
+
+```{r}
+plot(fast_bigo)
+plot(slow_bigo)
+```
+
+In this region, both plots look relatively linear, with the `fast` plot having lower runtime values in general.  OLS on each of these datasets gives the following results.
+
+```{r}
+fast_df <- fast_bigo[["runtimes"]]
+slow_df <- slow_bigo[["runtimes"]]
+
+lm(elapsed ~ n, data = fast_df) # anyNA
+lm(elapsed ~ n, data = slow_df) # my_anyNA
+```
+
+For the built-in `anyNA`, we do observe a smaller slope, i.e. the user-defined function does scale more poorly as `n` grows (although only by a multiplicative constant).  Let's see how this difference evolves over time.
+
+```{r}
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(ggplot2))
+
+slow_df %>%
+  inner_join(fast_df, by = "n", suffix = c("_slow", "_fast")) %>%
+  mutate(difference = elapsed_slow - elapsed_fast) %>%
+  ggplot(aes(x = n, y = difference)) +
+    geom_line() +
+    labs(title = "Runtime difference",
+         subtitle = "my_anyNA - anyNA",
+         y = "Difference (s)")
+```
+
+The underperformance of `my_anyNA` generally worsens as `n` increases, due to the smaller slope of `anyNA`.
