@@ -92,4 +92,18 @@ test_that("Function name is right.", {
 
 })
 
+#############
+### PLOTS ###
+#############
+
+test_that("Plot is right.", {
+
+  p1 <- plot(r1)
+  expect_is(p1, c("gg", "ggplot"))
+
+  p2 <- plot(r2)
+  expect_is(p2, c("gg", "ggplot"))
+
+})
+
 ###
