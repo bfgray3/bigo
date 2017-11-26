@@ -45,7 +45,10 @@ bigo <- function(f, ..., num_runs = 1) {
 
   f <- match.fun(f)
   f_args <- names(formals(f))
-  f_char <- deparse(substitute(f))
+
+  this_call <- match.call()
+  f_char <- deparse(this_call[["f"]])
+  if (length(f_char) > 1) f_char <- "anonymous"
 
   #################
   ### ARGUMENTS ###
@@ -83,7 +86,7 @@ bigo <- function(f, ..., num_runs = 1) {
   runtime_results <- arg_ranges %>%
                        purrr::map(floor) %>%
                        expand.grid() %>%
-                       mutate(elapsed = purrr::pmap_dbl(., .f_time, .fun = f))
+                       dplyr::mutate(elapsed = purrr::pmap_dbl(., .f_time, .fun = f))
 
   results <- list(runtimes = runtime_results,
                   function_name = f_char,
