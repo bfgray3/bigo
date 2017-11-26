@@ -11,8 +11,9 @@ URL: https://github.com/bfgray3/bigo
 BugReports: https://github.com/bfgray3/bigo/issues
 Encoding: UTF-8
 Depends: R (>= 3.2.0)
-Imports: tibble,
-    ggplot2
+Imports: utils,
+    ggplot2,
+    purrr
 LazyData: true
 License: MIT + file LICENSE
 Suggests: testthat

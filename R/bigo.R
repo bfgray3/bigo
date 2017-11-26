@@ -4,6 +4,8 @@
 #'
 #' @docType package
 #' @name bigo
+#' @importFrom purrr %>%
+#' @export purrr::`%>%`
 NULL
 
 ###
