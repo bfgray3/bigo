@@ -2,6 +2,5 @@
 
 S3method(plot,bigo)
 S3method(print,bigo)
-export("purrr::`%>%`")
 export(bigo)
 importFrom(purrr,"%>%")
