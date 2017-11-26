@@ -1,6 +1,6 @@
 Type: Package
 Package: bigo
-Version: 0.0.0.9000
+Version: 0.0.1
 Title: Analysis of Algorithmic Complexity
 Description: Simple tools for analyzing algorithmic complexity.
 Authors@R: person("Bernie",
