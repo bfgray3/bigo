@@ -17,5 +17,8 @@ Imports: utils,
     purrr
 LazyData: true
 License: MIT + file LICENSE
-Suggests: testthat
+Suggests: testthat,
+    knitr,
+    rmarkdown
 RoxygenNote: 6.0.1
+VignetteBuilder: knitr
