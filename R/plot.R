@@ -12,10 +12,9 @@ plot.bigo <- function(x, y, ...) {
     var_name <- setdiff(names(df), "elapsed")
     p <- ggplot2::ggplot(df, ggplot2::aes_string(x = var_name, y = "elapsed")) +
            ggplot2::geom_line() +
-           ggplot2::labs(title = "",
-                         x = "",
-                         y = "",
-                         subtitle = "")
+           ggplot2::labs(title = paste("Complexity of", x[["function_name"]]),
+                         x = var_name,
+                         y = "Runtime (s)")
 
     return(p)
 
@@ -24,10 +23,10 @@ plot.bigo <- function(x, y, ...) {
     var_names <- setdiff(names(df), "elapsed")
     p <- ggplot2::ggplot(df, ggplot2::aes(x = var_names[[1]], y = var_names[[2]], z = "elapsed")) +
            ggplot2::geom_contour() +
-           ggplot2::labs(title = "",
-                         x = "",
-                         y = "",
-                         subtitle = "")
+           ggplot2::labs(title = paste("Complexity of", x[["function_name"]]),
+                         x = var_names[[1]],
+                         y = var_names[[2]],
+                         z = "Runtime (s)")
 
     return(p)
 
