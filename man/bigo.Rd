@@ -15,11 +15,13 @@ bigo(f, ..., num_runs = 1)
 \item{...}{One or more numeric or integer vectors, passed as named
 arguments, where the names are arguments of \code{f}.}
 
-\item{num_runs}{The number of experiments over which to average results.}
+\item{num_runs}{The number of experiments over which to average results.
+Currently only 1 is supported.}
 }
 \value{
-A tibble of class \code{bigo} with containing the results of the
-  runtime experiments
+An object of class \code{bigo} containing the results of the
+  runtime experiments: a tibble of runtimes, the function name, and the
+  number of runs that the results are averaged over.
 }
 \description{
 Simple tools for analyzing algorithmic complexity.

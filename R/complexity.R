@@ -31,13 +31,27 @@
 #' @param ... One or more numeric or integer vectors, passed as named
 #'   arguments, where the names are arguments of \code{f}.
 #' @param num_runs The number of experiments over which to average results.
-#' @return A tibble of class \code{bigo} with containing the results of the
-#'   runtime experiments
+#'   Currently only 1 is supported.
+#' @return An object of class \code{bigo} containing the results of the
+#'   runtime experiments: a tibble of runtimes, the function name, and the
+#'   number of runs that the results are averaged over.
 #' @examples
 #' bigo(f = function(n) if (n < 3) 1 else { Recall(n - 1) + Recall(n - 2) },
 #'      n = 1:15)
 #' @export
 bigo <- function(f, ..., num_runs = 1) {
+
+  ########################
+  ### num_runs WARNING ###
+  ########################
+
+  if (num_runs != 1) {
+
+    warning("Non-unit values of `num_runs` are not supported until version 0.0.2;",
+            " setting `num_runs` to 1.", call. = FALSE)
+    num_runs <- 1
+
+  }
 
   ################
   ### FUNCTION ###
@@ -56,14 +70,18 @@ bigo <- function(f, ..., num_runs = 1) {
 
   arg_ranges <- list(...)
   if (! length(arg_ranges)) {
+
     stop("Must pass at least one named argument for complexity evaluation.",
          call. = FALSE)
+
   }
 
   passed_args <- names(arg_ranges)
   if (any(passed_args == "") || is.null(passed_args)) {
+
     stop("All arguments for complexity evaluation must be named.",
          call. = FALSE)
+
   }
 
   #######################################
@@ -73,10 +91,12 @@ bigo <- function(f, ..., num_runs = 1) {
   invalid_args <- setdiff(passed_args, f_args)
 
   if (length(invalid_args)) {
+
     stop("Passed ", paste(invalid_args, collapse = ", "),
          " to be evaluated for complexity, but ",
          if (length(invalid_args) > 1) "they are " else "it is ",
          "not an argument of `", f_char, "`.", call. = FALSE)
+
   }
 
   #######################
