@@ -1,8 +1,10 @@
 Type: Package
 Package: bigo
 Version: 0.0.1
-Title: Analysis of Algorithmic Complexity
-Description: Simple tools for analyzing algorithmic complexity.
+Title: Analysis of Empirical Algorithmic Complexity
+Description: Tools for analyzing the empirical algorithmic
+    complexity of R functions through the measurement and plotting
+    of runtimes for inputs within a given range.
 Authors@R: person("Bernie",
                   "Gray",
                   email = "bfgray3@gmail.com",
